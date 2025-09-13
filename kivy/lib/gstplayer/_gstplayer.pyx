@@ -125,14 +125,14 @@ class GstPlayerException(Exception):
 
 cdef void _on_appsink_sample(
         void *c_player, int width, int height,
-        char *data, int datasize) with gil:
+        char *data, int datasize) noexcept with gil:
     cdef GstPlayer player = <GstPlayer>c_player
     cdef bytes buf = data[:datasize]
     if player.sample_cb:
         player.sample_cb(width, height, buf)
 
 
-cdef void _on_gstplayer_message(void *c_player, GstMessage *message) with gil:
+cdef void _on_gstplayer_message(void *c_player, GstMessage *message) noexcept with gil:
     cdef GstPlayer player = <GstPlayer>c_player
     cdef GError *err = NULL
     if message.type == GST_MESSAGE_EOS:
